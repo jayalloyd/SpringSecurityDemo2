@@ -1,0 +1,44 @@
+package com.meenus.SpringSecurityDemo;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception{
+        //to change configuration we have to create object security filter chain ...
+        //by default spring will define it...if we didnt specify
+       http.csrf(customizer->customizer.disable());//disabling csrf
+               http.authorizeHttpRequests(request->request.anyRequest().authenticated());//enabling the security for the requests
+        //formLogin(Customizer.withDefaults());//gets form login and can use in postman also
+        http.httpBasic(Customizer.withDefaults());
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));//making it stateless
+
+
+
+     return http.build();
+
+    }
+    @Bean
+    public UserDetailsService userDetailsService(){//spring security will actually look at the
+        //UserDetailsService Object and finds the user details
+        UserDetails user= User.withDefaultPasswordEncoder().username("navin").password("n@123").roles("user").build();
+        UserDetails admin= User.withDefaultPasswordEncoder().username("lloyd").password("l@123").roles("admin").build();
+
+        return new InMemoryUserDetailsManager(user,admin);
+
+
+    }
+}
