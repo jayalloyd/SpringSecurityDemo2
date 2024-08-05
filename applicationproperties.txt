@@ -1,0 +1,5 @@
+application.properties
+spring.application.name=SpringSecurityDemo
+spring.security.user.name=rooney
+spring.security.user.password=1234
+server.servlet.session.cookie.same-site=strict
