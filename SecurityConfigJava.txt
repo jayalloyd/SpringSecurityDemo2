@@ -1,0 +1,31 @@
+package com.meenus.SpringSecurityDemo;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception{
+        //to change configuration we have to create object security filter chain ...
+        //by default spring will define it...if we didnt specify
+       http.csrf(customizer->customizer.disable());//disabling csrf
+               http.authorizeHttpRequests(request->request.anyRequest().authenticated());//enabling the security for the requests
+        //formLogin(Customizer.withDefaults());//gets form login and can use in postman also
+        http.httpBasic(Customizer.withDefaults());
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));//making it stateless
+
+
+
+     return http.build();
+
+    }
+
+}
