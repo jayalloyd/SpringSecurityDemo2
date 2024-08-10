@@ -3,7 +3,7 @@
  I have used My SQL Database for storing login credentials.
 
  For JWT dependencies used:
- jwt-api
- jwt-impl
- jwt-jackson
+ jjwt-api
+ jjwt-impl
+ jjwt-jackson
  
